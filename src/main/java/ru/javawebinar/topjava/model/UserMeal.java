@@ -7,17 +7,24 @@ import java.time.LocalDateTime;
  * 11.01.2015.
  */
 public class UserMeal {
-    protected final LocalDateTime dateTime;
+    private long id;
 
-    protected final String description;
+    private LocalDateTime dateTime;
 
-    protected final int calories;
+    private String description;
+
+    private int calories;
+
+    public UserMeal() {
+    }
 
     public UserMeal(LocalDateTime dateTime, String description, int calories) {
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
     }
+
+    public long getId() { return id; }
 
     public LocalDateTime getDateTime() {
         return dateTime;
@@ -29,5 +36,21 @@ public class UserMeal {
 
     public int getCalories() {
         return calories;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCalories(int calories) {
+        this.calories = calories;
     }
 }
