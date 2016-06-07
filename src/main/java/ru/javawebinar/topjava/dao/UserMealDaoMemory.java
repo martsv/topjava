@@ -47,8 +47,7 @@ public class UserMealDaoMemory implements UserMealDao {
 
     @Override
     public void delete(long id) {
-        if (userMealMap.containsKey(id))
-            userMealMap.remove(id);
+        userMealMap.remove(id);
     }
 
     @Override

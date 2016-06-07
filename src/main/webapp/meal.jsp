@@ -12,9 +12,9 @@
         Meal ID: <input type="text" readonly="readonly" name="id"
                         value="${meal.id}" /> <br/>
     </c:if>
+    DateTime: <input type="text" name="dateTime" value="${f:formatDateTime(meal.dateTime)}" /> <br/>
     Description: <input type="text" name="description" value="${meal.description}" /> <br/>
     Calories: <input type="text" name="calories" value="${meal.calories}" /> <br/>
-    <input type="text" name="dateTime" value="${meal.dateTime}" hidden="hidden" />
     <input type="submit" value="Submit" />
 </form>
 </body>

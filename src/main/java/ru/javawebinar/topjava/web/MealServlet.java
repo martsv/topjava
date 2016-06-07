@@ -5,6 +5,7 @@ import ru.javawebinar.topjava.dao.UserMealDao;
 import ru.javawebinar.topjava.dao.UserMealDaoMemory;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.model.UserMealWithExceed;
+import ru.javawebinar.topjava.util.DateUtil;
 import ru.javawebinar.topjava.util.UserMealsUtil;
 
 import javax.servlet.ServletException;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
@@ -68,14 +70,18 @@ public class MealServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             meal.setCalories(0);
         }
+        try {
+            LocalDateTime dateTime = DateUtil.parseDateTime(request.getParameter("dateTime"));
+            meal.setDateTime(dateTime);
+        } catch (DateTimeParseException e) {
+            meal.setDateTime(LocalDateTime.now());
+        }
 
         String id = request.getParameter("id");
         if (id == null || id.isEmpty()) {
-            meal.setDateTime(LocalDateTime.now());
             userMealDao.add(meal);
         } else {
             meal.setId(Long.parseLong(id));
-            meal.setDateTime(LocalDateTime.parse(request.getParameter("dateTime")));
             userMealDao.update(meal);
         }
 

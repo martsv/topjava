@@ -12,10 +12,14 @@ public final class DateUtil {
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     public static String formatDateTime(LocalDateTime dateTime) {
-        return dateTime.format(dateTimeFormatter);
+        return dateTime == null? "": dateTime.format(dateTimeFormatter);
     }
 
     public static String formatDateTimeWithPattern(LocalDateTime dateTime, String pattern) {
-        return dateTime.format(DateTimeFormatter.ofPattern(pattern));
+        return dateTime == null? "": dateTime.format(DateTimeFormatter.ofPattern(pattern));
+    }
+
+    public static LocalDateTime parseDateTime(String strDate) {
+        return LocalDateTime.parse(strDate, dateTimeFormatter);
     }
 }
