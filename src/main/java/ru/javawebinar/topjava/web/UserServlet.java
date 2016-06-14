@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
+import ru.javawebinar.topjava.LoggedUser;
 import ru.javawebinar.topjava.repository.UserRepository;
 import ru.javawebinar.topjava.repository.mock.InMemoryUserRepositoryImpl;
 
@@ -26,6 +27,16 @@ public class UserServlet extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         repository = new InMemoryUserRepositoryImpl();
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        String id = request.getParameter("id");
+        LoggedUser.setId(Integer.valueOf(id));
+        LOG.info("LoggedUser.setId " + id);
+        request.setAttribute("userList", repository.getAll());
+        request.getRequestDispatcher("/userList.jsp").forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -19,6 +19,13 @@
 <section>
     <h2><a href="index.html">Home</a></h2>
     <h3>Meal list</h3>
+    <form method="post" action="meals">
+        <label>From Date:</label><input type="date" name="startDate">
+        <label>To Date:</label><input type="date" name="endDate"><br>
+        <label>From Time:</label><input type="time" name="startTime">
+        <label>To Time:</label><input type="time" name="endTime"><br>
+        <button type="submit">Filter</button>
+    </form>
     <a href="meals?action=create">Add Meal</a>
     <hr>
     <table border="1" cellpadding="8" cellspacing="0">
