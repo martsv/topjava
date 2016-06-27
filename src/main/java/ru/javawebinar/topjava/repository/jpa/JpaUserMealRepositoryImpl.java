@@ -54,14 +54,11 @@ public class JpaUserMealRepositoryImpl implements UserMealRepository {
 
     @Override
     public UserMeal get(int id, int userId) {
-        try {
-            return em.createNamedQuery(UserMeal.GET, UserMeal.class)
+        List<UserMeal> meals = em.createNamedQuery(UserMeal.GET, UserMeal.class)
                     .setParameter("id", id)
                     .setParameter("userId", userId)
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+                    .getResultList();
+        return meals.size() == 1? meals.get(0): null;
     }
 
     @Override
