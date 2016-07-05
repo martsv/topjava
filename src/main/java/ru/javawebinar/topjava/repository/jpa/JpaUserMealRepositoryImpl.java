@@ -71,4 +71,6 @@ public class JpaUserMealRepositoryImpl implements UserMealRepository {
                 .setParameter("startDate", startDate)
                 .setParameter("endDate", endDate).getResultList();
     }
+
+
 }
