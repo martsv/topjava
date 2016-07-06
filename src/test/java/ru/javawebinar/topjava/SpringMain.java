@@ -20,7 +20,7 @@ public class SpringMain {
     public static void main(String[] args) {
         // java 7 Automatic resource management
         try (ClassPathXmlApplicationContext appCtx = new ClassPathXmlApplicationContext()) {
-            appCtx.getEnvironment().setActiveProfiles(Profiles.POSTGRES, Profiles.DATAJPA);
+            appCtx.getEnvironment().setActiveProfiles(Profiles.ACTIVE_DB, Profiles.DATAJPA);
             appCtx.setConfigLocations("spring/spring-app.xml","spring/mock.xml");
             appCtx.refresh();
             System.out.println(Arrays.toString(appCtx.getBeanDefinitionNames()));
