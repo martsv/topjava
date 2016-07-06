@@ -13,21 +13,31 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.repository.UserMealRepository;
+import ru.javawebinar.topjava.util.TimeUtil;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * User: gkislin
- * Date: 26.08.2014
+ * Created by mart on 06.07.16.
  */
-
 @Repository
-@Profile({Profiles.POSTGRES})
-public class JdbcUserMealRepositoryImpl implements UserMealRepository {
+@Profile({Profiles.HSQLDB})
+public class HsqldbJdbcUserMealRepositoryImpl implements UserMealRepository {
 
-    private static final RowMapper<UserMeal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(UserMeal.class);
+    private static final RowMapper<UserMeal> ROW_MAPPER = new RowMapper<UserMeal>() {
+        @Override
+        public UserMeal mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new UserMeal(rs.getInt("id"),
+                                TimeUtil.parseLocalDateTime(rs.getString("date_time")),
+                                rs.getString("description"),
+                                rs.getInt("calories"));
+        }
+    };
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -38,7 +48,7 @@ public class JdbcUserMealRepositoryImpl implements UserMealRepository {
     private SimpleJdbcInsert insertUserMeal;
 
     @Autowired
-    public JdbcUserMealRepositoryImpl(DataSource dataSource) {
+    public HsqldbJdbcUserMealRepositoryImpl(DataSource dataSource) {
         this.insertUserMeal = new SimpleJdbcInsert(dataSource)
                 .withTableName("meals")
                 .usingGeneratedKeyColumns("id");
@@ -50,7 +60,7 @@ public class JdbcUserMealRepositoryImpl implements UserMealRepository {
                 .addValue("id", userMeal.getId())
                 .addValue("description", userMeal.getDescription())
                 .addValue("calories", userMeal.getCalories())
-                .addValue("date_time", userMeal.getDateTime())
+                .addValue("date_time", Timestamp.valueOf(userMeal.getDateTime()))
                 .addValue("user_id", userId);
 
         if (userMeal.isNew()) {
@@ -89,6 +99,6 @@ public class JdbcUserMealRepositoryImpl implements UserMealRepository {
     public List<UserMeal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
         return jdbcTemplate.query(
                 "SELECT * FROM meals WHERE user_id=?  AND date_time BETWEEN  ? AND ? ORDER BY date_time DESC",
-                ROW_MAPPER, userId, startDate, endDate);
+                ROW_MAPPER, userId, Timestamp.valueOf(startDate), Timestamp.valueOf(endDate));
     }
 }
