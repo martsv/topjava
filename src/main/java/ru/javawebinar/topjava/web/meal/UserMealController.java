@@ -17,35 +17,36 @@ import java.time.LocalTime;
  * Created by mart on 12.07.16.
  */
 @Controller
+@RequestMapping("/meals")
 public class UserMealController extends AbstractUserMealController {
 
-    @RequestMapping(value = "/meals", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String mealList(Model model) {
         model.addAttribute("mealList", super.getAll());
         return "mealList";
     }
 
-    @RequestMapping(value = "/meals/delete/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public String deleteMeal(@PathVariable("id") int id) {
         super.delete(id);
         return "redirect:/meals";
     }
 
-    @RequestMapping(value = "/meals/update/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
     public String updateMeal(@PathVariable("id") int id, Model model) {
         final UserMeal meal = super.get(id);
         model.addAttribute("meal", meal);
         return "mealEdit";
     }
 
-    @RequestMapping(value = "/meals/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String createMeal(Model model) {
         final UserMeal meal = new UserMeal(LocalDateTime.now().withNano(0).withSecond(0), "", 1000);
         model.addAttribute("meal", meal);
         return "mealEdit";
     }
 
-    @RequestMapping(value = "/meals/filter", method = RequestMethod.POST)
+    @RequestMapping(value = "/filter", method = RequestMethod.POST)
     public String filterMeal(Model model, HttpServletRequest request) {
         LocalDate startDate = TimeUtil.parseLocalDate(resetParam("startDate", request));
         LocalDate endDate = TimeUtil.parseLocalDate(resetParam("endDate", request));
@@ -55,7 +56,7 @@ public class UserMealController extends AbstractUserMealController {
         return "mealList";
     }
 
-    @RequestMapping(value = "/meals", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public String mealSave(HttpServletRequest request) {
         final UserMeal userMeal = new UserMeal(
                 LocalDateTime.parse(request.getParameter("dateTime")),
