@@ -58,6 +58,15 @@ public class UserMealRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    public void testGetByDateTime() throws Exception {
+        TestUtil.print(mockMvc.perform(get(REST_URL + "byDateTime?startDate=2015-05-31&startTime=10:00:00&endDate=2015-05-31&endTime=15:00:00"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MATCHER_WITH_EXCEEDED.contentListMatcher(UserMealsUtil.createWithExceed(MEAL5, true),
+                                                                    UserMealsUtil.createWithExceed(MEAL4, true))));
+    }
+
+    @Test
     public void testDelete() throws Exception {
         mockMvc.perform(delete(REST_URL + MEAL1_ID))
                 .andDo(print())

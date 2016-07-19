@@ -9,7 +9,9 @@ import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.to.UserMealWithExceed;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -38,6 +40,14 @@ public class UserMealRestController extends AbstractUserMealController {
                                 startDate.toLocalTime(),
                                 endDate.toLocalDate(),
                                 endDate.toLocalTime());
+    }
+
+    @RequestMapping(value = "/byDateTime", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<UserMealWithExceed> getByDateTime(@RequestParam("startDate") LocalDate startDate,
+                                                  @RequestParam("startTime") LocalTime startTime,
+                                                  @RequestParam("endDate") LocalDate endDate,
+                                                  @RequestParam("endTime") LocalTime endTime) {
+        return super.getBetween(startDate, startTime, endDate, endTime);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
