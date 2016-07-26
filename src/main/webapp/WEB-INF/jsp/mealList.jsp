@@ -16,24 +16,37 @@
             <h3><fmt:message key="meals.title"/></h3>
 
             <div class="view-box">
-                <form method="post" action="meals/filter">
-                    <dl>
-                        <dt>From Date:</dt>
-                        <dd><input type="date" name="startDate" value="${startDate}"></dd>
-                    </dl>
-                    <dl>
-                        <dt>To Date:</dt>
-                        <dd><input type="date" name="endDate" value="${endDate}"></dd>
-                    </dl>
-                    <dl>
-                        <dt>From Time:</dt>
-                        <dd><input type="time" name="startTime" value="${startTime}"></dd>
-                    </dl>
-                    <dl>
-                        <dt>To Time:</dt>
-                        <dd><input type="time" name="endTime" value="${endTime}"></dd>
-                    </dl>
-                    <button class="btn btn-sm btn-primary" type="submit"><fmt:message key="meals.filter"/></button>
+                <form method="post" class="form-horizontal" id="filter">
+                    <div class="form-group">
+                        <label for="startDate" class="control-label col-xs-2">From Date:</label>
+
+                        <div class="col-xs-2">
+                            <input type="date" class="form-control" id="startDate" name="startDate">
+                        </div>
+                        <label for="endDate" class="control-label col-xs-2">To Date:</label>
+
+                        <div class="col-xs-2">
+                            <input type="date" class="form-control" id="endDate" name="endDate">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="startTime" class="control-label col-xs-2">From Time:</label>
+
+                        <div class="col-xs-2">
+                            <input type="time" class="form-control" id="startTime" name="startTime">
+                        </div>
+                        <label for="endTime" class="control-label col-xs-2">To Time:</label>
+
+                        <div class="col-xs-2">
+                            <input type="time" class="form-control" id="endTime" name="endTime">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-offset-2 col-xs-2">
+                            <button type="submit" class="btn btn-sm btn-primary"><fmt:message key="meals.filter"/></button>
+                        </div>
+                    </div>
                 </form>
 
                 <a class="btn btn-sm btn-info" id="add"><fmt:message key="meals.add"/></a>
@@ -50,7 +63,7 @@
                     </thead>
                     <c:forEach items="${mealList}" var="meal">
                         <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.to.UserMealWithExceed"/>
-                        <tr class="${meal.exceed ? 'exceeded' : 'normal'}">
+                        <tr class="${meal.exceed ? 'exceeded' : 'normal'}" id="${meal.id}">
                             <td>
                                     <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>
                                     <%--<%=TimeUtil.toString(meal.getDateTime())%>--%>
@@ -58,8 +71,8 @@
                             </td>
                             <td>${meal.description}</td>
                             <td>${meal.calories}</td>
-                            <td><a class="btn btn-xs btn-primary edit" id="${meal.id}">Edit</a></td>
-                            <td><a class="btn btn-xs btn-danger delete" id="${meal.id}">Delete</a></td>
+                            <td><a class="btn btn-xs btn-primary edit">Edit</a></td>
+                            <td><a class="btn btn-xs btn-danger delete">Delete</a></td>
                         </tr>
                     </c:forEach>
                 </table>
@@ -127,35 +140,41 @@
 
     // $(document).ready(function () {
     $(function () {
-        datatableApi = $('#datatable').dataTable({
-            "bPaginate": false,
-            "bInfo": false,
-            "aoColumns": [
+        datatableApi = $('#datatable').DataTable({
+            "paging": false,
+            "info": false,
+            "columns": [
                 {
-                    "mData": "dateTime"
+                    "data": "dateTime"
                 },
                 {
-                    "mData": "description"
+                    "data": "description"
                 },
                 {
-                    "mData": "calories"
+                    "data": "calories"
                 },
                 {
-                    "sDefaultContent": "Edit",
-                    "bSortable": false
+                    "defaultContent": "Edit",
+                    "orderable": false
                 },
                 {
-                    "sDefaultContent": "Delete",
-                    "bSortable": false
+                    "defaultContent": "Delete",
+                    "orderable": false
                 }
             ],
-            "aaSorting": [
+            "order": [
                 [
                     0,
                     "asc"
                 ]
             ]
         });
+
+        $("#filter").submit(function () {
+            updateTable();
+            return false;
+        })
+
         makeEditable();
     });
 </script>
