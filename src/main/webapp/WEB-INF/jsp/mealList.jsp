@@ -138,6 +138,17 @@
     var ajaxUrl = 'ajax/meals/';
     var datatableApi;
 
+    function updateTable() {
+        $.ajax({
+            type: "POST",
+            url: ajaxUrl + "filter",
+            data: $("#filter").serialize(),
+            success: function (data) {
+                datatableApi.clear().rows.add(data).draw();
+            }
+        })
+    }
+
     // $(document).ready(function () {
     $(function () {
         datatableApi = $('#datatable').DataTable({

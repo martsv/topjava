@@ -84,14 +84,3 @@ function enableUser(check) {
         }
     });
 }
-
-function updateTable() {
-    $.ajax({
-        type: "POST",
-        url: ajaxUrl + "filter",
-        data: $("#filter").serialize(),
-        success: function (data) {
-            datatableApi.clear().rows.add(data).draw();
-        }
-    })
-}
