@@ -54,7 +54,9 @@ $(function () {
             ]
         ],
         "createdRow": function (row, data, dataIndex) {
-            $(row).css("color", data.exceed? "red": "green");
+            //$(row).css("color", data.exceed? "red": "green");
+            //$(row).addClass(data.exceed? "exceeded": "normal");
+            $(row).toggleClass(data.exceed? "exceeded": "normal");
         },
         "initComplete": makeEditable
     });
@@ -64,6 +66,9 @@ $(function () {
         return false;
     });
 
+    $('#dateTime').datetimepicker({
+        format:'Y-m-d H:i'
+    });
     $('#startDate').datetimepicker({
         timepicker:false,
         format:'Y-m-d'

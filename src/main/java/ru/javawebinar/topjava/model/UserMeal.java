@@ -25,13 +25,11 @@ import java.time.LocalDateTime;
 })
 @Entity
 @Table(name = "meals", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "meals_unique_user_datetime_idx")})
-public class UserMeal extends BaseEntity implements Serializable {
+public class UserMeal extends BaseEntity {
     public static final String GET = "UserMeal.get";
     public static final String ALL_SORTED = "UserMeal.getAll";
     public static final String DELETE = "UserMeal.delete";
     public static final String GET_BETWEEN = "UserMeal.getBetween";
-
-    private static final long serialVersionUID = 1L;
 
     @Column(name = "date_time", nullable = false)
     @NotNull

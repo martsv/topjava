@@ -22,6 +22,10 @@ function add() {
 function updateRow(id) {
     $.get(ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
+            if (key == 'dateTime') {
+                var dateObject = new Date(value);
+                value = dateObject.toISOString().substring(0, 16).replace("T", " ");
+            }
             form.find("input[name='" + key + "']").val(value);
         });
         $('#editRow').modal();

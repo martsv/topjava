@@ -34,11 +34,7 @@ public class RootController {
     }
 
     @RequestMapping(value = "/meals", method = RequestMethod.GET)
-    public String mealList(Model model) {
-        model.addAttribute("mealList",
-                UserMealsUtil.getWithExceeded(mealService.getAll(AuthorizedUser.id()), AuthorizedUser.getCaloriesPerDay()));
-        return "mealList";
-    }
+    public String mealList() { return "mealList"; }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(ModelMap model,
